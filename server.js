@@ -1,6 +1,5 @@
 // NodeJs
 // MongoDB 
-// teste
 
 const express = require("express");
 const mongoose = require("mongoose");
@@ -14,6 +13,7 @@ const loginRoutes = require("./routes/User/Login/login");
 const newUserRoutes = require("./routes/User/NewUser/newUser");
 const perfilImage = require("./routes/User/PerfilImage/perfilImage");
 const perfilRoutes = require("./routes/Perfil/perfil");
+const newEcotourism = require("./routes/Ecotourism/ecotourism");
 
 app.use(cors());
 app.use(express.json());
@@ -39,6 +39,7 @@ app.use("/api/users", newUserRoutes);
 app.use("/api/login", loginRoutes);
 app.use("/api/perfil", perfilRoutes);
 app.use("/api/perfilImage", perfilImage);
+app.use("/api/new_ecotourism", newEcotourism);
 
 app.listen(port, () => {
 	console.log(`Servidor está ouvindo na porta: ${port}`);
