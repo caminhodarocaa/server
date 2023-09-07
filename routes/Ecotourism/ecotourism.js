@@ -21,10 +21,32 @@ router.post("/", async (req, res) => {
 
 		await newEcotourism.save();
 
-		res.json({ message: "new Ecotourism place created successfully" });
+		res.json({ message: "New Ecotourism place created successfully", id: newEcotourism._id });
+	} catch (err) {
+		res.status(500).json({ error: err.message });
+	}
+});
+
+router.post("/new_images/:user_id/:idEcotourism", async (req, res) => {
+	try {
+		const { user_id, idEcotourism } = req.params;
+		const { propriedadeImageURL } = req.body;
+
+		const ecotourism = await Ecotourism.findById(idEcotourism);
+
+		if (!ecotourism) {
+			return res.status(404).json({ error: "User not found" });
+		}
+
+		ecotourism.propriedadeImageURL = propriedadeImageURL;
+
+		await ecotourism.save();
+
+		res.json({ message: "Ecotourism image URL updated successfully" });
 	} catch (err) {
 		res.status(500).json({ error: err.message });
 	}
 });
 
 module.exports = router;
+ 
