@@ -33,6 +33,10 @@ const ecotourismSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	propriedadeImageURL: {
+		type: Object,
+		required: false,
+	},
 });
 
 const Ecotourism = mongoose.model("Ecotourism", ecotourismSchema);
