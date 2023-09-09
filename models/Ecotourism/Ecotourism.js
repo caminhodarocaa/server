@@ -34,7 +34,7 @@ const ecotourismSchema = new mongoose.Schema({
 		required: true,
 	},
 	propriedadeImageURL: {
-		type: Object,
+		type: [String],
 		required: false,
 	},
 });
