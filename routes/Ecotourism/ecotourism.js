@@ -67,7 +67,6 @@ router.post("/near_ecotourism/:latitude/:longitude/:dist", async (req, res) => {
 				{ latitude: latitudeReferencia, longitude: longitudeReferencia },
 				{ latitude: place.localisacao_geografica.coordinates[0], longitude: place.localisacao_geografica.coordinates[1] }
 			);
-			console.log(req.params.dist);
 			return distancia <= req.params.dist * 1000;
 		});
 
