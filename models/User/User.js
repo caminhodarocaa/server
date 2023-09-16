@@ -17,10 +17,6 @@ const userSchema = new mongoose.Schema({
 		type: Number,
 		required: true,
 	},
-	rg: {
-		type: Number,
-		required: true,
-	},
 	telefone: {
 		type: Number,
 		required: true,

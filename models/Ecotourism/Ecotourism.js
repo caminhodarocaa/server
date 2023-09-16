@@ -1,5 +1,20 @@
 const mongoose = require("mongoose");
 
+const commentSchema = new mongoose.Schema({
+	text: {
+		type: String,
+		required: false,
+	},
+	comment_user_id: {
+		type: String,
+		required: false,
+	},
+	timestamp: {
+		type: Date,
+		default: Date.now,
+	},
+});
+
 const ecotourismSchema = new mongoose.Schema({
 	nome_propriedade: {
 		type: String,
@@ -37,6 +52,7 @@ const ecotourismSchema = new mongoose.Schema({
 		type: [String],
 		required: false,
 	},
+	comments: [commentSchema],
 });
 
 const Ecotourism = mongoose.model("Ecotourism", ecotourismSchema);
