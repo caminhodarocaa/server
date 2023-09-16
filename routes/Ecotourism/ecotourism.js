@@ -106,5 +106,28 @@ router.post("/near_ecotourism/:latitude/:longitude/:dist", async (req, res) => {
 	}
 });
 
+router.post("/add_comment/:idEcotourism", async (req, res) => {
+	try {
+		const { idEcotourism } = req.params;
+		const { text, comment_user_id } = req.body;
+
+		const ecotourism = await Ecotourism.findById(idEcotourism);
+
+		if (!ecotourism) {
+			return res.status(404).json({ error: "Ecotourism place not found" });
+		}
+
+		ecotourism.comments.push({ text: text, comment_user_id });
+
+		await ecotourism.save();
+
+		res.json({ message: "Comment added successfully" });
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ error: err.message });
+	}
+});
+
+
 module.exports = router;
  
