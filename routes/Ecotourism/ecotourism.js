@@ -128,6 +128,33 @@ router.post("/add_comment/:idEcotourism", async (req, res) => {
 	}
 });
 
+router.post("/disable_comment/:idEcotourism/:commentId", async (req, res) => {
+	try {
+		const { idEcotourism, commentId } = req.params;
+
+		const ecotourism = await Ecotourism.findById(idEcotourism);
+
+		if (!ecotourism) {
+			return res.status(404).json({ error: "Ecotourism place not found" });
+		}
+
+		const comment = ecotourism.comments.id(commentId);
+
+		if (!comment) {
+			return res.status(404).json({ error: "Comment not found" });
+		}
+
+		comment.active = false;
+
+		await ecotourism.save();
+
+		res.json({ message: "Comment disabled successfully" });
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ error: err.message });
+	}
+});
+
 
 module.exports = router;
  
