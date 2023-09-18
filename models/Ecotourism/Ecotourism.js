@@ -9,6 +9,10 @@ const commentSchema = new mongoose.Schema({
 		type: String,
 		required: false,
 	},
+	active: {
+		type: String,
+		required: false,
+	},
 	timestamp: {
 		type: Date,
 		default: Date.now,
