@@ -8,7 +8,7 @@ const Ecotourism = require("../../models/Ecotourism/Ecotourism");
 
 router.post("/", async (req, res) => {
 	try {
-		const { nome_propriedade, endereco, cep, bairro, sigla_uf, municipio, localisacao_geografica, user_id } = req.body;
+		const { nome_propriedade, endereco, cep, bairro, sigla_uf, municipio, localisacao_geografica, user_id, tipo } = req.body;
 		const newEcotourism = new Ecotourism({
 			nome_propriedade,
 			endereco,
@@ -18,6 +18,7 @@ router.post("/", async (req, res) => {
 			municipio,
 			localisacao_geografica,
 			user_id,
+			tipo,
 		});
 
 		await newEcotourism.save();
