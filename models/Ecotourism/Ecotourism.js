@@ -57,6 +57,10 @@ const ecotourismSchema = new mongoose.Schema({
 		required: false,
 	},
 	comments: [commentSchema],
+	tipo: {
+		type: String,
+		required: false,
+	},
 });
 
 const Ecotourism = mongoose.model("Ecotourism", ecotourismSchema);
