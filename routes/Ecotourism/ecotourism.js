@@ -109,7 +109,7 @@ router.post("/near_ecotourism/:latitude/:longitude/:dist", async (req, res) => {
 router.post("/add_comment/:idEcotourism", async (req, res) => {
 	try {
 		const { idEcotourism } = req.params;
-		const { text, comment_user_id } = req.body;
+		const { text, comment_user_id, active } = req.body;
 
 		const ecotourism = await Ecotourism.findById(idEcotourism);
 
@@ -117,7 +117,7 @@ router.post("/add_comment/:idEcotourism", async (req, res) => {
 			return res.status(404).json({ error: "Ecotourism place not found" });
 		}
 
-		ecotourism.comments.push({ text: text, comment_user_id });
+		ecotourism.comments.push({ text: text, comment_user_id, active });
 
 		await ecotourism.save();
 
