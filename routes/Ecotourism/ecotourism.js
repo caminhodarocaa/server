@@ -156,6 +156,73 @@ router.post("/disable_comment/:idEcotourism/:commentId", async (req, res) => {
 	}
 });
 
+router.post("/find_ecotourism/:idEcotourism", async (req, res) => {
+	try {
+		const { idEcotourism } = req.params;
+
+		const ecotourism = await Ecotourism.findById(idEcotourism);
+
+		if (!ecotourism) {
+			return res.status(404).json({ error: "Ecotourism place not found" });
+		}
+
+		res.status(200).json({ ecotourism });
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ error: err.message });
+	}
+});
+
+router.put("/edit_ecotourism/:idEcotourism", async (req, res) => {
+	try {
+		const { idEcotourism } = req.params;
+		const { nome_propriedade, endereco, cep, bairro, sigla_uf, municipio, localisacao_geografica, user_id, tipo } = req.body;
+
+		const ecotourism = await Ecotourism.findById(idEcotourism);
+
+		if (!ecotourism) {
+			return res.status(404).json({ error: "Ecotourism place not found" });
+		}
+
+		ecotourism.nome_propriedade = nome_propriedade;
+		ecotourism.endereco = endereco;
+		ecotourism.cep = cep;
+		ecotourism.bairro = bairro;
+		ecotourism.sigla_uf = sigla_uf;
+		ecotourism.municipio = municipio;
+		ecotourism.localisacao_geografica = localisacao_geografica;
+		ecotourism.user_id = user_id;
+		ecotourism.tipo = tipo;
+
+		await ecotourism.save();
+
+		res.json({ message: "Ecotourism place updated successfully" });
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ error: err.message });
+	}
+});
+
+router.get("/search_ecotourism/:keyword", async (req, res) => {
+	try {
+		const { keyword } = req.params;
+
+		if (!keyword) {
+			return res.status(400).json({ error: "Keyword is required for searching." });
+		}
+
+		const ecotourismPlaces = await Ecotourism.find({
+			nome_propriedade: { $regex: keyword, $options: "i" },
+		});
+
+		res.status(200).json({ ecotourismPlaces });
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ error: err.message });
+	}
+});
+
+
 
 module.exports = router;
  
