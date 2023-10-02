@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+// Definindo o esquema para os comentários
 const commentSchema = new mongoose.Schema({
 	text: {
 		type: String,
@@ -15,10 +16,11 @@ const commentSchema = new mongoose.Schema({
 	},
 	timestamp: {
 		type: Date,
-		default: Date.now,
+		default: Date.now, // Data de criação padrão é a data atual
 	},
 });
 
+// Definindo o esquema para a entidade de ecoturismo
 const ecotourismSchema = new mongoose.Schema({
 	nome_propriedade: {
 		type: String,
@@ -63,6 +65,8 @@ const ecotourismSchema = new mongoose.Schema({
 	},
 });
 
+// Criando o modelo "Ecotourism" com base no esquema
 const Ecotourism = mongoose.model("Ecotourism", ecotourismSchema);
 
+// Exportando o modelo
 module.exports = Ecotourism;

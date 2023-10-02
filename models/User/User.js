@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+// Definindo o esquema para a entidade de Usuario
 const userSchema = new mongoose.Schema({
 	nome: {
 		type: String,
@@ -22,7 +23,7 @@ const userSchema = new mongoose.Schema({
 		required: true,
 	},
 	data_nascimento: {
-		type: Number,
+		type: String,
 		required: true,
 	},
 	userImageURL: {
@@ -35,6 +36,8 @@ const userSchema = new mongoose.Schema({
 	},
 });
 
+// Criando o modelo "User" com base no esquema
 const User = mongoose.model("User", userSchema);
 
+// Exportando o modelo
 module.exports = User;

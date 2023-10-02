@@ -6,9 +6,12 @@ const router = express.Router();
 
 const Ecotourism = require("../../models/Ecotourism/Ecotourism");
 
+// Criar um novo local de ecoturismo
 router.post("/", async (req, res) => {
 	try {
+		// Extrair dados do corpo da solicitação
 		const { nome_propriedade, endereco, cep, bairro, sigla_uf, municipio, localisacao_geografica, user_id, tipo } = req.body;
+		// Criar um novo objeto Ecotourism
 		const newEcotourism = new Ecotourism({
 			nome_propriedade,
 			endereco,
@@ -21,27 +24,34 @@ router.post("/", async (req, res) => {
 			tipo,
 		});
 
+		// Salvar o novo objeto no banco de dados
 		await newEcotourism.save();
 
 		res.json({ message: "New Ecotourism place created successfully", id: newEcotourism._id });
 	} catch (err) {
+		// Lidar com erros e enviar uma resposta de erro
 		res.status(500).json({ error: err.message });
 	}
 });
 
+// Atualizar a URL da imagem do local de ecoturismo
 router.post("/new_images/:user_id/:idEcotourism", async (req, res) => {
 	try {
+		// Extrair parâmetros da solicitação
 		const { user_id, idEcotourism } = req.params;
 		const { propriedadeImageURL } = req.body;
 
+		// Encontrar o local de ecoturismo pelo ID
 		const ecotourism = await Ecotourism.findById(idEcotourism);
 
 		if (!ecotourism) {
 			return res.status(404).json({ error: "User not found" });
 		}
 
+		// Atualizar a URL da imagem do local de ecoturismo
 		ecotourism.propriedadeImageURL = propriedadeImageURL;
 
+		// Salvar as alterações no banco de dados
 		await ecotourism.save();
 
 		res.json({ message: "Ecotourism image URL updated successfully" });
@@ -50,6 +60,7 @@ router.post("/new_images/:user_id/:idEcotourism", async (req, res) => {
 	}
 });
 
+// Encontrar locais de ecoturismo próximos com base na latitude, longitude e distância
 router.post("/near_ecotourism/:latitude/:longitude/:dist", async (req, res) => {
 	try {
 		const { latitude, longitude } = req.params;
@@ -78,6 +89,7 @@ router.post("/near_ecotourism/:latitude/:longitude/:dist", async (req, res) => {
 	}
 });
 
+// Adicionar um comentário a um local de ecoturismo
 router.post("/near_ecotourism/:latitude/:longitude/:dist", async (req, res) => {
 	try {
 		const { latitude, longitude } = req.params;
@@ -107,19 +119,23 @@ router.post("/near_ecotourism/:latitude/:longitude/:dist", async (req, res) => {
 	}
 });
 
+// Desativar um comentário de um local de ecoturismo
 router.post("/add_comment/:idEcotourism", async (req, res) => {
 	try {
 		const { idEcotourism } = req.params;
 		const { text, comment_user_id, active } = req.body;
 
+		// Encontrar o local de ecoturismo pelo ID
 		const ecotourism = await Ecotourism.findById(idEcotourism);
 
 		if (!ecotourism) {
 			return res.status(404).json({ error: "Ecotourism place not found" });
 		}
 
+		// Adicionar um novo comentário ao local de ecoturismo
 		ecotourism.comments.push({ text: text, comment_user_id, active });
 
+		// Salvar as alterações no banco de dados
 		await ecotourism.save();
 
 		res.json({ message: "Comment added successfully" });
@@ -129,10 +145,12 @@ router.post("/add_comment/:idEcotourism", async (req, res) => {
 	}
 });
 
+// Encontrar um local de ecoturismo pelo ID
 router.post("/disable_comment/:idEcotourism/:commentId", async (req, res) => {
 	try {
 		const { idEcotourism, commentId } = req.params;
 
+		// Encontrar o local de ecoturismo pelo ID
 		const ecotourism = await Ecotourism.findById(idEcotourism);
 
 		if (!ecotourism) {
@@ -147,6 +165,7 @@ router.post("/disable_comment/:idEcotourism/:commentId", async (req, res) => {
 
 		comment.active = false;
 
+		// Salvar as alterações no banco de dados
 		await ecotourism.save();
 
 		res.json({ message: "Comment disabled successfully" });
@@ -156,10 +175,12 @@ router.post("/disable_comment/:idEcotourism/:commentId", async (req, res) => {
 	}
 });
 
+// Editar informações de um local de ecoturismo
 router.post("/find_ecotourism/:idEcotourism", async (req, res) => {
 	try {
 		const { idEcotourism } = req.params;
 
+		// Encontrar o local de ecoturismo pelo ID
 		const ecotourism = await Ecotourism.findById(idEcotourism);
 
 		if (!ecotourism) {
@@ -173,17 +194,20 @@ router.post("/find_ecotourism/:idEcotourism", async (req, res) => {
 	}
 });
 
+// Editar informações de um local de ecoturismo
 router.put("/edit_ecotourism/:idEcotourism", async (req, res) => {
 	try {
 		const { idEcotourism } = req.params;
 		const { nome_propriedade, endereco, cep, bairro, sigla_uf, municipio, localisacao_geografica, user_id, tipo } = req.body;
 
+		// Encontrar o local de ecoturismo pelo ID
 		const ecotourism = await Ecotourism.findById(idEcotourism);
 
 		if (!ecotourism) {
 			return res.status(404).json({ error: "Ecotourism place not found" });
 		}
 
+		// Atualizar os dados do local de ecoturismo
 		ecotourism.nome_propriedade = nome_propriedade;
 		ecotourism.endereco = endereco;
 		ecotourism.cep = cep;
@@ -194,6 +218,7 @@ router.put("/edit_ecotourism/:idEcotourism", async (req, res) => {
 		ecotourism.user_id = user_id;
 		ecotourism.tipo = tipo;
 
+		// Salvar as alterações no banco de dados
 		await ecotourism.save();
 
 		res.json({ message: "Ecotourism place updated successfully" });
@@ -203,6 +228,7 @@ router.put("/edit_ecotourism/:idEcotourism", async (req, res) => {
 	}
 });
 
+// Pesquisar locais de ecoturismo com base em uma palavra-chave
 router.get("/search_ecotourism/:keyword", async (req, res) => {
 	try {
 		const { keyword } = req.params;
@@ -211,6 +237,7 @@ router.get("/search_ecotourism/:keyword", async (req, res) => {
 			return res.status(400).json({ error: "Keyword is required for searching." });
 		}
 
+		// Pesquisar locais de ecoturismo que correspondam à palavra-chave
 		const ecotourismPlaces = await Ecotourism.find({
 			nome_propriedade: { $regex: keyword, $options: "i" },
 		});
@@ -222,7 +249,6 @@ router.get("/search_ecotourism/:keyword", async (req, res) => {
 	}
 });
 
-
-
+// Exporta as fuções para o router
 module.exports = router;
  
