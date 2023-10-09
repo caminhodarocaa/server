@@ -8,6 +8,7 @@ const User = require("../../../models/User/User");
 // Rota para autenticar um usuário com base no email e senha
 router.post("/", async (req, res) => {
 	try {
+		console.log("entrou aqui ");
 		const { email, senha } = req.body;
 
 		// Procurar o usuário pelo email

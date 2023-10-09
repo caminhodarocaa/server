@@ -35,7 +35,7 @@ mongoose
 	});
 
 // Rota de teste para verificar se o servidor está funcionando
-app.get("/api", (req, res) => {
+app.get("/", (req, res) => {
 	console.log("Hello World!");
 	res.send("Hello World!");
 });
