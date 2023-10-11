@@ -36,4 +36,30 @@ router.post("/", async (req, res) => {
 	}
 });
 
+router.post("/reset-password", async (req, res) => {
+		try {
+			// Extrai o email e a senha do body
+			const { email, newPassword } = req.body;
+
+			// Verifica se o Email existe no bd
+			const user = await User.findOne({ email });
+
+			if (!user) {
+				return res.status(404).json({ error: "User not found" });
+			}
+
+			// Hash a nova senha
+			const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+
+			// Update a senha do BD
+			user.senha = hashedPassword;
+			await user.save();
+
+			res.json({ message: "Password reset successful" });
+		} catch (err) {
+			
+			res.status(500).json({ error: err.message });
+		}
+	});
+
 module.exports = router;
